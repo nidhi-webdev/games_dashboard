@@ -1,0 +1,116 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: 32px auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 32px;
+}
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  .lang-switch {
+    display: flex;
+    gap: 8px;
+    button {
+      min-width: 48px;
+      background: #530b78;
+      color: #fff;
+      border-radius: 4px;
+    }
+    button:not([color="primary"]) {
+      background: #e0dbe6;
+      color: #530b78;
+    }
+  }
+}
+.dashboard-filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+.dashboard-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 32px;
+}
+.game-card {
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8f6fa;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.game-card-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  position: relative;
+}
+.game-cover {
+  width: 100px;
+  height: 120px;
+  background: #e0e0e0;
+  border-radius: 8px;
+  margin-right: 8px;
+  position: relative;
+}
+.game-cover img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.fav-btn {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 2;
+  background: rgba(255,255,255,0.7);
+  border-radius: 50%;
+}
+.fav-btn .mat-icon.selected {
+  color: #ffd600;
+}
+.game-info {
+  flex: 1;
+}
+.game-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.game-times {
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+.game-time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+.game-time-row:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 800px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-container {
+    padding: 8px;
+  }
+  .dashboard-header, .dashboard-filters {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

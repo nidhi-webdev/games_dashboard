@@ -1,0 +1,70 @@
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Game Dashboard</h1>
+        <div class="lang-switch">
+            <button mat-button color="primary">EN</button>
+            <button mat-button>DE</button>
+        </div>
+    </div>
+    <div class="dashboard-filters">
+        <mat-form-field appearance="fill">
+            <mat-label>Filter by title</mat-label>
+            <input matInput #searchByTitle [value]="searchTitle() " (input)="searchTitle.set(searchByTitle.value)">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Min, user score</mat-label>
+            <mat-select></mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Release year</mat-label>
+            <mat-select [value]="searchYear()" (selectionChange)="searchYear.set($event.value)">
+                <mat-option value="">All</mat-option>
+                <mat-option value="2004">2004</mat-option>
+                <mat-option value="2005">2005</mat-option>
+                <mat-option value="2006">2006</mat-option>
+                <mat-option value="2007">2007</mat-option>
+                <mat-option value="2008">2008</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Playtime</mat-label>
+            <mat-select>
+
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="dashboard-cards">
+        @for (item of filterGames(); track item) {
+        <mat-card class="game-card" (click)="openGameDetail(item)">
+            <div class="game-card-content">
+                <div class="game-cover">
+                    <button mat-icon-button class="fav-btn" (click)="toggleFavorite(item.id)">
+                        <mat-icon [ngClass]="isFavorite(item.id) ? 'selected' : ''">
+                            {{ isFavorite(item.id) ? 'star' : 'star_border' }}
+                        </mat-icon>
+                    </button>
+                    <img [src]="item.cover" alt="{{item.title}} cover" />
+                </div>
+                <div class="game-info">
+                    <div class="game-title">{{item.title}}</div>
+                    <div class="game-times">
+                        <div class="game-time-row"><span>Overall</span> <span>{{item.length.overall.average}}h</span>
+                        </div>
+
+                        <div class="game-time-row main-row">
+                            <span>Main</span> <span class="score">{{item.metrics.score}}</span>
+                        </div>
+                        <div class="game-time-row"><span>Main + Extra</span>
+                            <span>{{item.length.main_extras.average}}h</span>
+                        </div>
+                        <div class="game-time-row"><span>Completionist</span>
+                            <span>{{item.length.completionist.average}}h</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </mat-card>
+        }
+    </div>
+</div>

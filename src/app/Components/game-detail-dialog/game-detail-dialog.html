@@ -1,0 +1,39 @@
+<h2 mat-dialog-title class="dialog-title">{{data.title}}</h2>
+<div class="dialog-content">
+  <div class="dialog-header">
+    <img [src]="data.cover" alt="{{data.title}} cover" class="dialog-cover" />
+    <div class="dialog-meta">
+      <p><strong>Genre:</strong> {{data.metadata.genre}}</p>
+      <p><strong>Publisher:</strong> {{data.metadata.publisher}}</p>
+      <p><strong>Year:</strong> {{data.release.year}}</p>
+      <p><strong>Console:</strong> {{data.release.console}}</p>
+      <p><strong>Score:</strong> {{data.metrics.score}}</p>
+    </div>
+  </div>
+  <table class="dialog-table">
+    <tr><th>Category</th><th>Average</th><th>Median</th><th>Polled</th></tr>
+    <tr><td>Main</td><td>{{data.length.main.average}}h</td><td>{{data.length.main.median}}h</td><td>{{data.length.main.polled}}</td></tr>
+    <tr><td>Main + Extra</td><td>{{data.length.main_extras.average}}h</td><td>{{data.length.main_extras.median}}h</td><td>{{data.length.main_extras.polled}}</td></tr>
+    <tr><td>Completionist</td><td>{{data.length.completionist.average}}h</td><td>{{data.length.completionist.median}}h</td><td>{{data.length.completionist.polled}}</td></tr>
+    <tr><td>Overall</td><td>{{data.length.overall.average}}h</td><td>{{data.length.overall.median}}h</td><td>{{data.length.overall.polled}}</td></tr>
+  </table>
+  <button mat-icon-button (click)="toggleFavorite()">
+    <mat-icon [ngClass]="isFavorite ? 'selected' : ''">{{ isFavorite ? 'star' : 'star_border' }}</mat-icon>
+  </button>
+  <form (ngSubmit)="onSubmit()" #timeForm="ngForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Time (hours)</mat-label>
+      <input matInput [(ngModel)]="timeValue" name="timeValue" required />
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Category</mat-label>
+      <mat-select [(ngModel)]="category" name="category" required>
+        <mat-option value="main">Main</mat-option>
+        <mat-option value="main_extras">Main + Extra</mat-option>
+        <mat-option value="completionist">Completionist</mat-option>
+        <mat-option value="overall">Overall</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </form>
+</div>
