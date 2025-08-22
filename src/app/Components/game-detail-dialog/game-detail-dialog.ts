@@ -40,7 +40,7 @@ export class GameDetailDialog {
       const favIds = new Set<string>(JSON.parse(fav));
       this.isFavorite = favIds.has(this.data.id);
     }
-  }  
+  }
 
   toggleFavorite() {
     this.isFavorite = !this.isFavorite;
@@ -49,5 +49,13 @@ export class GameDetailDialog {
   onSubmit() {
     console.log('Time:', this.timeValue, 'Category:', this.category, 'Game:', this.data.title);
     this.dialogRef.close();
+  }
+
+  getPolledColor(polled: number): string {
+    if (polled < 5) return '#c40434';
+    if (polled < 15) return '#c44b0e';
+    if (polled < 30) return '#12c4bb';
+    if (polled < 50) return '#1262c4';
+    return '#0414c4';
   }
 }

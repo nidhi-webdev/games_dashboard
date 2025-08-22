@@ -11,7 +11,7 @@ export class DashboardService {
   dashboardSignal!: Signal<GameModel[]>;
 
   constructor(private http: HttpClient) {
-    this.dashboardSignal = toSignal(this.http.get<GameModel[]>(this.dashboardUrl), {initialValue: []})
+    this.dashboardSignal = toSignal(this.http.get<GameModel[]>(this.dashboardUrl), { initialValue: [] })
   }
 }
 

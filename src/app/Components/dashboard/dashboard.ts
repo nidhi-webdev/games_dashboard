@@ -33,6 +33,9 @@ export class Dashboard {
   favoriteIds = new Set<string>();
   searchTitle = signal('');
   searchYear = signal('');
+  minScore = signal('');
+  minPlayTime = signal('');
+  maxPlayTime = signal('');
 
   constructor(private dashboardservice: DashboardService, private dialog: MatDialog) {
     this.dashboard = this.dashboardservice.dashboardSignal;
@@ -67,10 +70,17 @@ export class Dashboard {
   filterGames = computed(() => {
     const item = this.searchTitle().toLowerCase().trim();
     const year = this.searchYear();
-    return this.dashboard().filter(t =>
-      (!item || t.title.toLowerCase().includes(item)) &&
-      (!year || t.release.year.toString() === year)
-    );
+    const minScore = Number(this.minScore());
+    const minPlayTime = Number(this.minPlayTime());
+    const maxPlayTime = Number(this.maxPlayTime());
+    return this.dashboard().filter(t => {
+      const overallTime = Number(t.length.overall.average);
+      return (!item || t.title.toLowerCase().includes(item)) &&
+        (!year || t.release.year.toString() === year) &&
+        (!this.minScore() || t.metrics.score >= minScore) &&
+        (!this.minPlayTime() || overallTime >= minPlayTime) &&
+        (!this.maxPlayTime() || overallTime <= maxPlayTime);
+    });
   });
 
   //open Modal
@@ -79,5 +89,13 @@ export class Dashboard {
       data: item,
       // width: '500px'
     });
+  }
+
+  getPolledColor(polled: number): string {
+    if (polled < 5) return '#c40434';
+    if (polled < 15) return '#c44b0e';
+    if (polled < 30) return '#12c4bb';
+    if (polled < 50) return '#1262c4';
+    return '#0414c4';
   }
 }

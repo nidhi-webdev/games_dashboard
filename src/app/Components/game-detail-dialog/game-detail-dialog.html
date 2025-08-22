@@ -1,4 +1,5 @@
 <h2 mat-dialog-title class="dialog-title">{{data.title}}</h2>
+
 <div class="dialog-content">
   <div class="dialog-header">
     <img [src]="data.cover" alt="{{data.title}} cover" class="dialog-cover" />
@@ -10,12 +11,43 @@
       <p><strong>Score:</strong> {{data.metrics.score}}</p>
     </div>
   </div>
+
+  <div>
+    <p> {{data.description_en}}</p>
+  </div>
   <table class="dialog-table">
-    <tr><th>Category</th><th>Average</th><th>Median</th><th>Polled</th></tr>
-    <tr><td>Main</td><td>{{data.length.main.average}}h</td><td>{{data.length.main.median}}h</td><td>{{data.length.main.polled}}</td></tr>
-    <tr><td>Main + Extra</td><td>{{data.length.main_extras.average}}h</td><td>{{data.length.main_extras.median}}h</td><td>{{data.length.main_extras.polled}}</td></tr>
-    <tr><td>Completionist</td><td>{{data.length.completionist.average}}h</td><td>{{data.length.completionist.median}}h</td><td>{{data.length.completionist.polled}}</td></tr>
-    <tr><td>Overall</td><td>{{data.length.overall.average}}h</td><td>{{data.length.overall.median}}h</td><td>{{data.length.overall.polled}}</td></tr>
+    <tr>
+      <th>Category</th>
+      <th>Average</th>
+      <th>Median</th>
+      <th>Polled</th>
+    </tr>
+    <tr>
+      <td>Main</td>
+      <td [ngStyle]="{'color': getPolledColor(data.length.main.polled)}">{{data.length.main.average}}h</td>
+      <td>{{data.length.main.median}}h</td>
+      <td>{{data.length.main.polled}}</td>
+    </tr>
+    <tr>
+      <td>Main + Extra</td>
+      <td [ngStyle]="{'color': getPolledColor(data.length.main_extras.polled)}">{{data.length.main_extras.average}}h
+      </td>
+      <td>{{data.length.main_extras.median}}h</td>
+      <td>{{data.length.main_extras.polled}}</td>
+    </tr>
+    <tr>
+      <td>Completionist</td>
+      <td [ngStyle]="{'color': getPolledColor(data.length.completionist.polled)}">{{data.length.completionist.average}}h
+      </td>
+      <td>{{data.length.completionist.median}}h</td>
+      <td>{{data.length.completionist.polled}}</td>
+    </tr>
+    <tr>
+      <td>Overall</td>
+      <td [ngStyle]="{'color': getPolledColor(data.length.overall.polled)}">{{data.length.overall.average}}h</td>
+      <td>{{data.length.overall.median}}h</td>
+      <td>{{data.length.overall.polled}}</td>
+    </tr>
   </table>
   <button mat-icon-button (click)="toggleFavorite()">
     <mat-icon [ngClass]="isFavorite ? 'selected' : ''">{{ isFavorite ? 'star' : 'star_border' }}</mat-icon>

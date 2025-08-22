@@ -13,7 +13,7 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label>Min, user score</mat-label>
-            <mat-select></mat-select>
+            <input matInput #minScoreInput [value]="minScore()" (input)="minScore.set(minScoreInput.value)">
         </mat-form-field>
         <mat-form-field appearance="fill">
             <mat-label>Release year</mat-label>
@@ -27,10 +27,12 @@
             </mat-select>
         </mat-form-field>
         <mat-form-field appearance="fill">
-            <mat-label>Playtime</mat-label>
-            <mat-select>
-
-            </mat-select>
+            <mat-label>Min Playtime</mat-label>
+            <input matInput #minPlayTimeInput [value]="minPlayTime()" (input)="minPlayTime.set(minPlayTimeInput.value)">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Max Playtime</mat-label>
+            <input matInput #maxPlayTimeInput [value]="maxPlayTime()" (input)="maxPlayTime.set(maxPlayTimeInput.value)">
         </mat-form-field>
     </div>
     <div class="dashboard-cards">
@@ -48,17 +50,20 @@
                 <div class="game-info">
                     <div class="game-title">{{item.title}}</div>
                     <div class="game-times">
-                        <div class="game-time-row"><span>Overall</span> <span>{{item.length.overall.average}}h</span>
+                        <div class="game-time-row"><span>Overall</span>
+                            <span [ngStyle]="{'color': getPolledColor(item.length.overall.polled)}">
+                                {{item.length.overall.average | number:'1.2-2'}}h
+                            </span>
                         </div>
 
                         <div class="game-time-row main-row">
                             <span>Main</span> <span class="score">{{item.metrics.score}}</span>
                         </div>
                         <div class="game-time-row"><span>Main + Extra</span>
-                            <span>{{item.length.main_extras.average}}h</span>
+                            <span>{{item.length.main_extras.average | number:'1.2-2'}}h</span>
                         </div>
                         <div class="game-time-row"><span>Completionist</span>
-                            <span>{{item.length.completionist.average}}h</span>
+                            <span>{{item.length.completionist.average | number:'1.2-2'}}h</span>
                         </div>
 
                     </div>
