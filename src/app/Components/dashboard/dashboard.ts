@@ -1,15 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, Signal, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { DashboardService } from '../../Service/dashboard-service';
+// import { DashboardService } from '../../Service/dashboard-service';
 import { GameModel } from '../../Model/dashboard.model';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { GameDetailDialog } from '../game-detail-dialog/game-detail-dialog';
+import { Select, Store } from '@ngxs/store';
+import { HttpClient } from '@angular/common/http';
+import { GameState } from '../../State/game.state';
+import { Observable } from 'rxjs';
+// import { Store, Select } from '@ngxs/store';
+// import 
 
 @Component({
   selector: 'app-dashboard',
@@ -28,17 +34,12 @@ import { GameDetailDialog } from '../game-detail-dialog/game-detail-dialog';
   styleUrl: './dashboard.scss'
 })
 export class Dashboard {
-  dashboard: Signal<GameModel[]>;
   private favoriteKey = 'favoriteGames';
   favoriteIds = new Set<string>();
-  searchTitle = signal('');
-  searchYear = signal('');
-  minScore = signal('');
-  minPlayTime = signal('');
-  maxPlayTime = signal('');
+  private store = inject(Store);
+  private http = inject(HttpClient);
 
-  constructor(private dashboardservice: DashboardService, private dialog: MatDialog) {
-    this.dashboard = this.dashboardservice.dashboardSignal;
+  constructor(private dialog: MatDialog) {
     this.loadFavorites();
   }
 
@@ -66,22 +67,7 @@ export class Dashboard {
     localStorage.setItem(this.favoriteKey, JSON.stringify(Array.from(this.favoriteIds)));
   }
 
-  // search 
-  filterGames = computed(() => {
-    const item = this.searchTitle().toLowerCase().trim();
-    const year = this.searchYear();
-    const minScore = Number(this.minScore());
-    const minPlayTime = Number(this.minPlayTime());
-    const maxPlayTime = Number(this.maxPlayTime());
-    return this.dashboard().filter(t => {
-      const overallTime = Number(t.length.overall.average);
-      return (!item || t.title.toLowerCase().includes(item)) &&
-        (!year || t.release.year.toString() === year) &&
-        (!this.minScore() || t.metrics.score >= minScore) &&
-        (!this.minPlayTime() || overallTime >= minPlayTime) &&
-        (!this.maxPlayTime() || overallTime <= maxPlayTime);
-    });
-  });
+
 
   //open Modal
   openGameDetail(item: GameModel) {
@@ -97,5 +83,12 @@ export class Dashboard {
     if (polled < 30) return '#12c4bb';
     if (polled < 50) return '#1262c4';
     return '#0414c4';
+  }
+
+  @Select(GameState.games) games$!: Observable<GameModel[]>;
+  @Select(GameState.filter) filter$!: Observable<any>;
+
+  ngOnInit() {
+    this.http.get
   }
 }
