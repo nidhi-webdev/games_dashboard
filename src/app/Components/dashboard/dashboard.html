@@ -9,15 +9,18 @@
     <div class="dashboard-filters">
         <mat-form-field appearance="fill">
             <mat-label>Filter by title</mat-label>
-            <input matInput #searchByTitle [value]="searchTitle() " (input)="searchTitle.set(searchByTitle.value)">
+            <input matInput [value]="(filter$ | async)?.title" (input)="updateFilter({ title: $event.target.value })">
         </mat-form-field>
+
         <mat-form-field appearance="fill">
             <mat-label>Min, user score</mat-label>
-            <input matInput #minScoreInput [value]="minScore()" (input)="minScore.set(minScoreInput.value)">
+            <input matInput [value]="(filter$ | async)?.minScore"
+                (input)="updateFilter({ minScore: $event.target.value })">
         </mat-form-field>
+
         <mat-form-field appearance="fill">
             <mat-label>Release year</mat-label>
-            <mat-select [value]="searchYear()" (selectionChange)="searchYear.set($event.value)">
+            <mat-select [value]="(filter$ | async)?.year" (selectionChange)="updateFilter({ year: $event.value })">
                 <mat-option value="">All</mat-option>
                 <mat-option value="2004">2004</mat-option>
                 <mat-option value="2005">2005</mat-option>
@@ -26,17 +29,22 @@
                 <mat-option value="2008">2008</mat-option>
             </mat-select>
         </mat-form-field>
+
         <mat-form-field appearance="fill">
             <mat-label>Min Playtime</mat-label>
-            <input matInput #minPlayTimeInput [value]="minPlayTime()" (input)="minPlayTime.set(minPlayTimeInput.value)">
+            <input matInput [value]="(filter$ | async)?.minPlayTime"
+                (input)="updateFilter({ minPlayTime: $event.target.value })">
         </mat-form-field>
+
         <mat-form-field appearance="fill">
-            <mat-label>Max Playtime Testing For Git Branch</mat-label>
-            <input matInput #maxPlayTimeInput [value]="maxPlayTime()" (input)="maxPlayTime.set(maxPlayTimeInput.value)">
+            <mat-label>Max Playtime</mat-label>
+            <input matInput [value]="(filter$ | async)?.maxPlayTime"
+                (input)="updateFilter({ maxPlayTime: $event.target.value })">
         </mat-form-field>
     </div>
+   
     <div class="dashboard-cards">
-        @for (item of filterGames(); track item) {
+        @for (item of (games$ | async); track item) {
         <mat-card class="game-card" (click)="openGameDetail(item)">
             <div class="game-card-content">
                 <div class="game-cover">

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,7 +12,7 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { GameDetailDialog } from '../game-detail-dialog/game-detail-dialog';
 import { Select, Store } from '@ngxs/store';
 import { HttpClient } from '@angular/common/http';
-import { GameState } from '../../State/game.state';
+import { GameState, SetFilter, SetGames } from '../../State/game.state';
 import { Observable } from 'rxjs';
 // import { Store, Select } from '@ngxs/store';
 // import 
@@ -33,7 +33,7 @@ import { Observable } from 'rxjs';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss'
 })
-export class Dashboard {
+export class Dashboard  implements OnInit {
   private favoriteKey = 'favoriteGames';
   favoriteIds = new Set<string>();
   private store = inject(Store);
@@ -85,10 +85,17 @@ export class Dashboard {
     return '#0414c4';
   }
 
-  @Select(GameState.games) games$!: Observable<GameModel[]>;
-  @Select(GameState.filter) filter$!: Observable<any>;
+  // Use store.select instead of @Select for standalone components
+  games$ = this.store.select(GameState.filteredGames);
+  filter$ = this.store.select(GameState.filter);
 
   ngOnInit() {
-    this.http.get
+    this.http.get<GameModel[]>('https://static-media.api.mobilitysuite.de/2/6d324658-bf8b-4a69-8b07-61be1feb0eb3.json').subscribe(games => {
+      this.store.dispatch(new SetGames(games));
+    });
+  }
+
+  updateFilter(filter: Partial<any>) {
+    this.store.dispatch(new SetFilter(filter));
   }
 }
